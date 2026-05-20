@@ -3,8 +3,43 @@
   const progressBar = document.querySelector(".progress__bar");
   const navLinks = Array.from(document.querySelectorAll(".site-nav a"));
   const sections = Array.from(document.querySelectorAll("main section[id]"));
+  const rangeSections = Array.from(document.querySelectorAll("section[data-range]"));
+  const navToggle = document.querySelector(".nav-toggle");
+  const navCloseTargets = Array.from(document.querySelectorAll("[data-nav-close]"));
+  const rangeLabel = document.querySelector(".brand__subtitle");
   const root = document.documentElement;
   const clearPreload = () => root.classList.remove("preload");
+  const defaultRange = rangeLabel ? rangeLabel.textContent : "";
+  const mobileQuery = window.matchMedia("(max-width: 980px)");
+  let activeSection = sections[0] || null;
+
+  const setNavOpen = (isOpen) => {
+    document.body.classList.toggle("nav-open", isOpen);
+    if (navToggle) {
+      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+  };
+
+  if (navToggle) {
+    navToggle.addEventListener("click", () => {
+      const isOpen = document.body.classList.contains("nav-open");
+      setNavOpen(!isOpen);
+    });
+  }
+
+  navCloseTargets.forEach((target) => {
+    target.addEventListener("click", () => setNavOpen(false));
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => setNavOpen(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setNavOpen(false);
+    }
+  });
 
   const setActiveLink = (id) => {
     navLinks.forEach((link) => {
@@ -12,11 +47,45 @@
     });
   };
 
+  const setRangeLabel = (section) => {
+    if (!rangeLabel) return;
+    if (!mobileQuery.matches) {
+      rangeLabel.textContent = defaultRange;
+      return;
+    }
+    if (!section) return;
+    const range = section.dataset.range || defaultRange;
+    rangeLabel.textContent = range;
+  };
+
+  const updateRangeFromScroll = () => {
+    if (!rangeSections.length) {
+      setRangeLabel(activeSection);
+      return;
+    }
+    if (!mobileQuery.matches) {
+      setRangeLabel(activeSection);
+      return;
+    }
+    const headerOffset = header ? header.getBoundingClientRect().height + 12 : 80;
+    let current = rangeSections[0];
+    rangeSections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top - headerOffset <= 0) {
+        current = section;
+      }
+    });
+    activeSection = current;
+    setRangeLabel(current);
+  };
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setActiveLink(entry.target.id);
+          activeSection = entry.target;
+          setRangeLabel(entry.target);
         }
       });
     },
@@ -24,6 +93,11 @@
   );
 
   sections.forEach((section) => observer.observe(section));
+  updateRangeFromScroll();
+
+  mobileQuery.addEventListener("change", () => {
+    updateRangeFromScroll();
+  });
 
   let ticking = false;
   const updateChrome = () => {
@@ -32,6 +106,7 @@
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? (offset / docHeight) * 100 : 0;
     progressBar.style.width = `${progress}%`;
+    updateRangeFromScroll();
   };
 
   const onScroll = () => {

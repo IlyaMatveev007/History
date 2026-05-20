@@ -39,7 +39,12 @@
         <span class="brand__title">Контрацепция в СССР</span>
         <span class="brand__subtitle">1917–1991</span>
       </div>
-      <nav class="site-nav" aria-label="Навигация по разделам">
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">
+        <span class="nav-toggle__label">Меню</span>
+        <span class="nav-toggle__icon" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Навигация по разделам">
+        <button class="nav-close" type="button" data-nav-close>Закрыть</button>
         <a href="#intro">Введение</a>
         <a href="#era-1">1917–1929</a>
         <a href="#era-2">1930–1954</a>
@@ -53,9 +58,10 @@
         <span class="progress__bar"></span>
       </div>
     </header>
+    <div class="nav-scrim" data-nav-close aria-hidden="true"></div>
 
     <main id="intro">
-      <section class="hero chapter" data-color="#f3eee4">
+      <section class="hero chapter" data-color="#f3eee4" data-range="Введение">
         <div class="chapter__content">
           <p class="eyebrow reveal">Музейная онлайн-экспозиция</p>
           <h1 class="hero__title reveal">
@@ -86,7 +92,7 @@
         </div>
       </section>
 
-      <section id="era-1" class="chapter" data-color="#efe7db">
+      <section id="era-1" class="chapter" data-color="#efe7db" data-range="1917–1929">
         <div class="chapter__media">
           <img
             src="src/2.png"
@@ -129,7 +135,7 @@
         </div>
       </section>
 
-      <section id="era-2" class="chapter chapter--reverse" data-color="#e6ddcf">
+      <section id="era-2" class="chapter chapter--reverse" data-color="#e6ddcf" data-range="1930–1954">
         <div class="chapter__media">
           <img
             src="src/3.png"
@@ -187,7 +193,7 @@
         </div>
       </section>
 
-      <section id="era-3" class="chapter" data-color="#efe5d5">
+      <section id="era-3" class="chapter" data-color="#efe5d5" data-range="1955–1970">
         <div class="chapter__media chapter__media--small">
           <img
             src="src/4.png"
@@ -230,7 +236,7 @@
         </div>
       </section>
 
-      <section id="era-4" class="chapter chapter--reverse" data-color="#e9dece">
+      <section id="era-4" class="chapter chapter--reverse" data-color="#e9dece" data-range="1971–1985">
         <div class="chapter__media chapter__media--small">
           <img
             src="src/5.png"
@@ -274,7 +280,7 @@
         </div>
       </section>
 
-      <section id="era-5" class="chapter" data-color="#f1e7d6">
+      <section id="era-5" class="chapter" data-color="#f1e7d6" data-range="1985–1991">
         <div class="chapter__media">
           <img
             src="src/6.png"
@@ -317,7 +323,7 @@
         </div>
       </section>
 
-      <section id="timeline" class="chapter timeline" data-color="#efe6d8">
+      <section id="timeline" class="chapter timeline" data-color="#efe6d8" data-range="1920–1991">
         <div class="chapter__content">
           <p class="eyebrow">Сводная линия времени</p>
           <h2>Ключевые вехи политики и практик</h2>
@@ -344,7 +350,7 @@
         </div>
       </section>
 
-      <section id="sources" class="chapter chapter--reverse" data-color="#f6f1e8">
+      <section id="sources" class="chapter chapter--reverse" data-color="#f6f1e8" data-range="Источники">
         <div class="chapter__media chapter__media--small">
           <img
             src="src/8.png"
